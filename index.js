@@ -35,15 +35,16 @@ const fi = (function() {
 //var sum = fi.reduce([1, 2, 3], function(acc, val, collection) { return acc + val; }, 0);
 //=> 6
 //callback = (acc, val, collection) => (acc + (val * 3))
-    reduce: function(array, callback) {
-      let total;
-      let acc = 0;
+    reduce: function(array, callback, total) {
+      if (!total) {
+        total = array[0]
+        array = array.slice(1)
+      }
+
       for (let i = 0; i < array.length; i++){
-          let val = array[i]
-          let total = (callback(acc, val, array), 0)
-          acc = total
-        } return total;
-       
+          total = callback(total, array[i], array)
+        } 
+        return total;
     },
 
     find: function(collection, predicate) {
@@ -111,53 +112,36 @@ const fi = (function() {
     },
 
     sortBy: function(collection, callback) {
-      let sorted = [];
-      if (typeof collection === "array"){
-        for(let item of collection){
-          sorted.push(callback(item))
-        } return sorted.sort 
-      } else if (typeof collection === "object"){
-        for (let item in collection) {
-          sorted.push(callback(item))
-        } return sorted.sort
-      }
+      let sorted = [...collection];
+      return sorted.sort(function(a,b){
+        return callback(a) - callback(b)
+      })
     },
 //[1, [2], [3, [[4]]]]) returns => [1, 2, 3, 4];
+//myArray.reduce((c, v) => c.concat(v), []).map(o => o.id);
     flatten: function(array, shallow){
       if (shallow === true){
         return array.flat(1)
       } else {
-        let newArray = [];
-        for(let i = 0; i < array.length, i++;){
-          newArray.concat(array[i])
-        }
-        return newArray
-        // return [].concat.apply([], array)
+        return array.flat(100)
       }
     }, 
 
     uniq: function(array, isSorted, callback){
-      let uniqueArr = [];
-      const unique = (value, index, self) => {
-        return self.indexOf(value) === index;
-      }
-      if(isSorted === true){
-        uniqueArr.push(array.call(unique))
-        return uniqueArr
-      } else {
-        // for (var i = 1; i < arr.length; i++) { 
-        //   if (arr[i-1] !== arr[i]) {
-        //     ret.push(arr[i]);
-        //   }
-        // }
-        // return ret;
+      if (isSorted){
+        let uniqueArr = [array[0]];
         for (let i = 1; i < array.length; i++){
           if (array[i-1] !== array[i]){
-            uniqueArr.push(callback(array[i]))
+            uniqueArr.push((array[i]))
           }
         } return uniqueArr
+      }  else {
+        const unique = (value, index, self) => {
+          return self.indexOf(value) === index;
+        }
+        let uniqArr = [...array]
+        return uniqArr.filter(unique)
       }
-      
     }, 
 
     keys: function(object) {
