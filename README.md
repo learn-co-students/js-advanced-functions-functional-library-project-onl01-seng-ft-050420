@@ -196,7 +196,7 @@ fi.compact([0, 1, false, 2, '', 3]);
 
 Returns a sorted copy of **array**, ranked in ascending order by the results of
 running each value through **callback**. The values from the original array
-should be retained within the sorted copy, just in ascending order.  
+should be retained within the sorted copy, just in ascending order.
 
 _The point of this exercise is not to write your own sorting algorithm and you are free to use the native [JS sort](https://www.w3schools.com/js/js_array_sort.asp)_
 
@@ -241,7 +241,7 @@ fi.uniq([1, 2, 1, 4, 1, 3]);
 => [1, 2, 4, 3]
 ```
 
-If you know in advance that the **array** is sorted, passing _true_ for **isSorted** will run a much faster algorithm. 
+If you know in advance that the **array** is sorted, passing _true_ for **isSorted** will run a much faster algorithm.
 
 ```javascript
 fi.uniq(['a', 'a', 'b', 'c', 'e', 'e', 'e', 'e'], true)
